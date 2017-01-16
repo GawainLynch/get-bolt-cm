@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+use Bolt\Site\Installer\Application;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$app = new Application();
+
+$app['console']->run();
