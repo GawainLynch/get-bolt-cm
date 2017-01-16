@@ -1,0 +1,57 @@
+<!doctype html>
+<!--[if IE]><![endif]-->
+<!--[if IE 7]><html xml:lang="en" lang="en" class="ie ie7"><![endif]-->
+<!--[if IE 8]><html xml:lang="en" lang="en" class="ie ie8"><![endif]-->
+<!--[if (lt IE 7)|(gt IE 8)|!(IE)]><!-->
+<html xml:lang="en" lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Get Bolt!</title>
+    <meta name="DCTERMS.title" content="Bolt CMS"/>
+    <meta name="robots" content="noydir, noodp"/>
+
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+    <link rel="shortcut icon" href="{{ asset('images/favicon-bolt.png') }}">
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,600italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
+    <link rel="stylesheet" href="{{ asset('styles/docs.css') }}" type="text/css" media="all" />
+
+    {% block extrahead %}
+    {% endblock extrahead %}
+
+    {% include '_headerscripts.twig' %}
+
+</head>
+
+<body class="body-docs">
+<header style="background-image: url(/files/header.jpg);">
+    <div class="inner">
+
+        <h1 id="logo"><img src="{{ asset('images/bolt.png') }}" width='200' alt="BoltCM" /></h1>
+        <h2 class="payoff">Sophisticated, Lightweight and Simple</h2>
+
+        <a class="menu-toggle"><span></span></a>
+    </div>
+</header>
+
+<nav class="main-nav expanded">
+    <ul>
+        <li></li>
+    </ul>
+</nav>
+
+<main class="row">
+
+    {% block content %}
+    {% endblock content %}
+
+</main>
+
+{% block extrafooter %}
+{% endblock extrafooter %}
+
+</body>
+</html>
