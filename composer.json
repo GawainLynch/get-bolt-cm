@@ -1,0 +1,35 @@
+{
+    "name": "bolt/get-bolt-cm",
+    "description": "Web site for get.bolt.cm",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gawain Lynch",
+            "email": "gawain.lynch@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bolt\\Site\\Installer\\": "src"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "monolog/monolog": "^2.0@dev",
+        "silex/silex": "^2.0",
+        "silex/web-profiler": "^2.0",
+        "symfony/asset": "^3.2",
+        "symfony/config": "^3.2",
+        "symfony/console": "^3.2",
+        "symfony/finder": "^3.2",
+        "symfony/security": "^3.2",
+        "symfony/web-profiler-bundle" : "^3.2",
+        "symfony/var-dumper": "^3.2",
+        "symfony/yaml": "^3.2",
+        "twig/twig": "^2.1",
+        "webmozart/path-util": "^2.3"
+    },
+    "require-dev": {
+    }
+}
