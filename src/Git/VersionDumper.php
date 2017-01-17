@@ -30,7 +30,7 @@ class VersionDumper
             throw new RuntimeException(sprintf('Directory does not exist: %s', $repoDir));
         }
 
-        $process = new Process('git tag | grep -E "^v\d*" | sed "s/^v//g"');
+        $process = new Process(sprintf('cd %s; git tag | grep -E "^v\d*" | sed "s/^v//g"', $repoDir));
         $process->run();
 
         if (!$process->isSuccessful()) {
