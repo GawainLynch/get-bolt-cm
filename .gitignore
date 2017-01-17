@@ -1,3 +1,5 @@
 app/config/*.yml
 var/*
 vendor/
+web/versions.json
+web/installer.version
