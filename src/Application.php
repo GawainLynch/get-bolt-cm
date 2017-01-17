@@ -19,15 +19,15 @@ class Application extends Silex\Application
             return new Yaml\Parser();
         };
 
-        $this['config_cache_factory'] = function($container) {
+        $this['config_cache_factory'] = function ($container) {
             return new ConfigCacheFactory($container['debug']);
         };
 
         $this->register(new Silex\Provider\TwigServiceProvider(), [
             'twig.path'       => __DIR__ . '/../view/templates',
-            'twig.options' => [
+            'twig.options'    => [
                 'cache' => __DIR__ . '/../var/cache/twig',
-            ]
+            ],
         ]);
         $this->register(new Silex\Provider\ServiceControllerServiceProvider());
         $this->register(new Silex\Provider\HttpFragmentServiceProvider());
@@ -61,4 +61,3 @@ class Application extends Silex\Application
         parent::flush();
     }
 }
-

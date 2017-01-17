@@ -2,6 +2,7 @@
 
 namespace Bolt\Site\Installer\Provider;
 
+use Bolt\Site\Installer\Command;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Symfony\Component\Console;
@@ -23,6 +24,7 @@ class ConsoleServiceProvider implements ServiceProviderInterface
 
         $container['console.commands'] = function ($container) {
             return [
+                new Command\DumpVersions(),
             ];
         };
     }
