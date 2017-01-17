@@ -24,6 +24,7 @@
         "symfony/console": "^3.2",
         "symfony/form": "^3.2",
         "symfony/finder": "^3.2",
+        "symfony/process": "^3.2",
         "symfony/security": "^3.2",
         "symfony/web-profiler-bundle" : "^3.2",
         "symfony/var-dumper": "^3.2",
