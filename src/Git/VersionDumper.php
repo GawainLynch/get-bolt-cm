@@ -51,11 +51,15 @@ class VersionDumper
             $verMajorMinor = sprintf('%s.%s', $parts[0], $parts[1]);
 
             $arr[$verMajor][$verMajorMinor][]  = $result;
-
         }
 
         krsort($arr);
-        array_walk($arr, function (&$a) { krsort($a, SORT_NATURAL); array_walk($a, function (&$v) { rsort($v); } ); });
+        array_walk($arr, function (&$a) {
+            krsort($a, SORT_NATURAL);
+            array_walk($a, function (&$v) {
+                rsort($v);
+            });
+        });
 
         $fs->dumpFile($targetFile, json_encode($arr, JSON_PRETTY_PRINT));
 
