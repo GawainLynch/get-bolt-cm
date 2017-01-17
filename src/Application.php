@@ -33,6 +33,8 @@ class Application extends Silex\Application
         $this->register(new Silex\Provider\HttpFragmentServiceProvider());
         $this->register(new Silex\Provider\VarDumperServiceProvider());
         $this->register(new Silex\Provider\AssetServiceProvider());
+        $this->register(new Silex\Provider\MonologServiceProvider());
+        $this->register(new Silex\Provider\FormServiceProvider());
         $this->register(new Provider\ConsoleServiceProvider());
 
         $config = [];
