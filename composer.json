@@ -35,7 +35,8 @@
         "symfony/var-dumper": "^3.2",
         "symfony/yaml": "^3.2",
         "twig/twig": "^2.1",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "ramsey/uuid-doctrine": "^1.2"
     },
     "require-dev": {
         "sorien/silex-pimple-dumper": "^2.0"
