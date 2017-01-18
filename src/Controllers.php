@@ -2,12 +2,16 @@
 
 namespace Bolt\Site\Installer;
 
+use Bolt\Site\Installer\Entity;
+use Bolt\Site\Installer\Entity\Download;
+use Bolt\Site\Installer\Exception\InvalidVersionException;
+use Doctrine\ORM\EntityManager;
 use Silex;
 use Silex\Api\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Controllers implements ControllerProviderInterface
 {
@@ -22,7 +26,15 @@ class Controllers implements ControllerProviderInterface
         $ctr = $app['controllers_factory'];
 
         $ctr->get('/', [$this, 'index'])
-            ->bind('index');
+            ->bind('index')
+        ;
+
+        $ctr->get('/download/{majorMinor}/{majorMinorPatch}', [$this, 'download'])
+            ->bind('download')
+            ->value('majorMinorPatch', null)
+            ->assert('majorMinor', Validator::REGEX_MAJOR_MINOR)
+            ->assert('majorMinorPatch', Validator::REGEX_MAJOR_MINOR_PATCH)
+        ;
 
         $app->error([$this, 'error']);
 
@@ -39,6 +51,35 @@ class Controllers implements ControllerProviderInterface
         $response = new Response($html);
 
         return $response;
+    }
+
+    /**
+     * @param string      $majorMinor
+     * @param string|null $majorMinorPatch
+     *
+     * @return Response
+     */
+    public function download($majorMinor, $majorMinorPatch)
+    {
+        $resolver = DownloadResolver::create()
+            ->setMajorMinor($majorMinor)
+            ->setMajorMinorPatch($majorMinorPatch)
+        ;
+
+        try {
+            $url = $resolver->getUrl();
+        } catch (InvalidVersionException $e) {
+            return new Response(sprintf('%s', $e->getMessage()), Response::HTTP_FORBIDDEN);
+        }
+
+        if ($this->app['debug']) {
+            $logger = $this->app['logger'];
+            $logger->info("Minor is: $majorMinor | Patch is: $majorMinorPatch | Download URL: $url");
+        }
+
+        $this->logDownload($majorMinorPatch);
+
+        return new RedirectResponse($resolver->getUrl());
     }
 
     protected function render($template, array $variables = [])
@@ -73,4 +114,34 @@ class Controllers implements ControllerProviderInterface
         return null;
     }
 
+    /**
+     * Record a request in the database.
+     *
+     * @param $majorMinorPatch
+     */
+    protected function logDownload($majorMinorPatch)
+    {
+        /** @var EntityManager $em */
+        $em = $this->app['orm.em'];
+        $em->getRepository(Entity\Download::class);
+        $d = (new Download())
+            ->setVersion($majorMinorPatch)
+            ->setPhpVersion($this->getRequest()->query->get('php'))
+            ->setDate(new \DateTime())
+            ->setIpAddress($this->getRequest()->getClientIp())
+        ;
+        $em->persist($d);
+        $em->flush($d);
+    }
+
+    /**
+     * @return Request|null
+     */
+    private function getRequest()
+    {
+        /** @var RequestStack $stack */
+        $stack = $this->app['request_stack'];
+
+        return $stack->getCurrentRequest();
+    }
 }
