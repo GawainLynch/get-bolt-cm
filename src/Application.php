@@ -35,12 +35,14 @@ class Application extends Silex\Application
         $this->register(new Silex\Provider\AssetServiceProvider());
         $this->register(new Silex\Provider\MonologServiceProvider());
         $this->register(new Silex\Provider\FormServiceProvider());
+        $this->register(new Silex\Provider\DoctrineServiceProvider());
+        $this->register(new Silex\Provider\HttpCacheServiceProvider());
         $this->register(new Provider\ConsoleServiceProvider());
 
         $config = [];
-        $configFile = __DIR__ . '/../app/config.yml';
+        $configFile = __DIR__ . '/../app/config/config.yml';
         if (file_exists($configFile)) {
-            $config = Yaml\Yaml::parse(file_get_contents(__DIR__ . '/../app/config.yml'));
+            $config = Yaml\Yaml::parse(file_get_contents(__DIR__ . '/../app/config/config.yml'));
         }
         $this['debug'] = isset($config['debug']) ? $config['debug'] : true;
 
@@ -48,10 +50,10 @@ class Application extends Silex\Application
             $this->register(new Silex\Provider\WebProfilerServiceProvider(), [
                 'profiler.cache_dir' => __DIR__ . '/../var/cache/profiler',
             ]);
-
-            ini_set('error_reporting', -1);
         }
         ini_set('display_errors', (int) $this['debug']);
+
+        $this['monolog.logfile'] = __DIR__ . '/../var/log/system.log';
     }
 
     public function flush()
