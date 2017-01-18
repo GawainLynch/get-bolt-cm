@@ -2,6 +2,7 @@
 
 namespace Bolt\Site\Installer;
 
+use Dflydev;
 use Silex;
 use Symfony\Component\Config\ConfigCacheFactory;
 use Symfony\Component\Yaml;
@@ -35,8 +36,8 @@ class Application extends Silex\Application
         $this->register(new Silex\Provider\AssetServiceProvider());
         $this->register(new Silex\Provider\MonologServiceProvider());
         $this->register(new Silex\Provider\FormServiceProvider());
-        $this->register(new Silex\Provider\DoctrineServiceProvider());
         $this->register(new Silex\Provider\HttpCacheServiceProvider());
+        $this->register(new Provider\DatabaseServiceProvider());
         $this->register(new Provider\ConsoleServiceProvider());
 
         $config = [];
@@ -55,7 +56,8 @@ class Application extends Silex\Application
 
         $this['monolog.logfile'] = __DIR__ . '/../var/log/system.log';
 
-        $app['assets.base_path'] = __DIR__ . '/../web';
+        $this['assets.base_path'] = '/';
+        $this['db.options'] = $config['database'];
     }
 
     public function flush()
