@@ -19,6 +19,8 @@ class Download
     protected $phpVersion;
     /** @var \DateTime */
     protected $date;
+    /** @var string */
+    protected $ipAddress;
 
     /**
      * @return int
@@ -84,6 +86,26 @@ class Download
     public function setDate(\DateTime $date): Download
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpAddress(): string
+    {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param string $ipAddress
+     *
+     * @return Download
+     */
+    public function setIpAddress(string $ipAddress): Download
+    {
+        $this->ipAddress = $ipAddress;
 
         return $this;
     }

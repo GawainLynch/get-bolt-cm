@@ -37,3 +37,8 @@ Bolt\Site\Installer\Entity\Download:
       type: datetime
       column: date
       unique: false
+    ipAddress:
+      type: string
+      length: 45
+      column: ip_address
+      unique: false
