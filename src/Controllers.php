@@ -46,7 +46,15 @@ class Controllers implements ControllerProviderInterface
      */
     public function index()
     {
-        $context = [];
+        try {
+            $json = \GuzzleHttp\json_decode(file_get_contents(__DIR__ . '/../web/versions.json'));
+            $latest = reset($json);
+            $latest = reset($latest);
+            $latest = reset($latest);
+        } catch (\InvalidArgumentException $e) {
+            $latest = 'unknown';
+        }
+        $context = ['latest' => $latest];
         $html = $this->render('index.twig', $context);
         $response = new Response($html);
 
