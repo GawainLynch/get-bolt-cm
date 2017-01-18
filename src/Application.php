@@ -54,6 +54,8 @@ class Application extends Silex\Application
         ini_set('display_errors', (int) $this['debug']);
 
         $this['monolog.logfile'] = __DIR__ . '/../var/log/system.log';
+
+        $app['assets.base_path'] = __DIR__ . '/../web';
     }
 
     public function flush()
