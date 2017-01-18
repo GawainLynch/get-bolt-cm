@@ -1,3 +1,4 @@
+{% use 'partial/_head_scripts.twig' %}
 <!doctype html>
 <!--[if IE]><![endif]-->
 <!--[if IE 7]><html xml:lang="en" lang="en" class="ie ie7"><![endif]-->
@@ -16,18 +17,15 @@
     <link rel="shortcut icon" href="{{ asset('images/favicon-bolt.png') }}">
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,600italic' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css" />
-    <link rel="stylesheet" href="{{ asset('styles/docs.css') }}" type="text/css" media="all" />
+    {{ block('head_scripts') }}
 
     {% block extrahead %}
     {% endblock extrahead %}
 
-    {% include '_headerscripts.twig' %}
-
 </head>
 
 <body class="body-docs">
-<header style="background-image: url(/files/header.jpg);">
+<header style="background-image: url(/images/header.jpg);">
     <div class="inner">
 
         <h1 id="logo"><img src="{{ asset('images/bolt.png') }}" width='200' alt="BoltCM" /></h1>
