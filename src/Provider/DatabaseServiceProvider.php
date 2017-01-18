@@ -3,9 +3,11 @@
 namespace Bolt\Site\Installer\Provider;
 
 use Dflydev;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Tools\Setup;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Ramsey\Uuid\Doctrine\UuidType;
 use Silex;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -24,6 +26,8 @@ class DatabaseServiceProvider implements ServiceProviderInterface
             'driver' => 'pdo_sqlite',
             'path' => __DIR__ . '/../app/database/site.db',
         ];
+
+        Type::addType('uuid', UuidType::class);
 
         $container->register(new Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider([
             'orm.proxies_dir' => __DIR__ . '/../var/cache/doctrine/proxy',

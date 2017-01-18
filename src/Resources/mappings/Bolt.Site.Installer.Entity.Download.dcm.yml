@@ -11,9 +11,11 @@ Bolt\Site\Installer\Entity\Download:
       columns: [ version_php ]
   id:
     id:
-      type: guid
+      type: uuid
       generator:
-        strategy: UUID
+        strategy: CUSTOM
+      customIdGenerator:
+        class: Ramsey\Uuid\Doctrine\UuidGenerator
   fields:
     version:
       type: string
