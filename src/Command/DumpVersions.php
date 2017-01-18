@@ -37,7 +37,7 @@ class DumpVersions extends Command
         $fs = new Filesystem();
         $repoPath = $input->getOption('repo');
         if (!$fs->exists($repoPath)) {
-            throw new \RuntimeException(sprintf('The repository directory %s doe not exist', $repoPath));
+            throw new \RuntimeException(sprintf('The repository directory %s does not exist', $repoPath));
         }
 
         $output->writeln("<info>\n Dumping versions from git …</info>");
