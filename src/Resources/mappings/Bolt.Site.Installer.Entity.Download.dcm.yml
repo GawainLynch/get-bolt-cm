@@ -1,0 +1,37 @@
+# Bolt.Site.Installer.Entity.Download.dcm.yml
+Bolt\Site\Installer\Entity\Download:
+  type: entity
+#  repositoryClass: Doctrine\Tests\ORM\Mapping\UserRepository
+  table: download
+  readOnly: false
+  indexes:
+    version_index:
+      columns: [ version ]
+    php_version_index:
+      columns: [ version_php ]
+  id:
+    id:
+      type: guid
+      generator:
+        strategy: UUID
+  fields:
+    version:
+      type: string
+      length: 32
+      column: version
+      unique: false
+      options:
+        fixed: true
+        comment: Requested version
+    phpVersion:
+      type: string
+      length: 32
+      column: version_php
+      unique: false
+      options:
+        notnull: false
+        comment: Requesting PHP version
+    date:
+      type: datetime
+      column: date
+      unique: false
