@@ -16,6 +16,7 @@
     },
     "minimum-stability": "stable",
     "require": {
+        "dflydev/doctrine-orm-service-provider": "^2.0",
         "doctrine/orm": "^2.5",
         "guzzlehttp/guzzle": "^6.2",
         "monolog/monolog": "^2.0@dev",
