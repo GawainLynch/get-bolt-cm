@@ -29,6 +29,10 @@ class Controllers implements ControllerProviderInterface
             ->bind('index')
         ;
 
+        $ctr->get('/latest', [$this, 'latest'])
+            ->bind('latest')
+        ;
+
         $ctr->get('/download/{majorMinor}/{majorMinorPatch}', [$this, 'download'])
             ->bind('download')
             ->value('majorMinorPatch', null)
@@ -46,19 +50,21 @@ class Controllers implements ControllerProviderInterface
      */
     public function index()
     {
-        try {
-            $json = \GuzzleHttp\json_decode(file_get_contents(__DIR__ . '/../web/versions.json'));
-            $latest = reset($json);
-            $latest = reset($latest);
-            $latest = reset($latest);
-        } catch (\InvalidArgumentException $e) {
-            $latest = 'unknown';
-        }
-        $context = ['latest' => $latest];
+        $context = [
+            'latest' => $this->getVersionManager()->getLatest()
+        ];
         $html = $this->render('index.twig', $context);
         $response = new Response($html);
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function latest()
+    {
+        return (string) $this->getVersionManager()->getLatest();
     }
 
     /**
@@ -151,5 +157,13 @@ class Controllers implements ControllerProviderInterface
         $stack = $this->app['request_stack'];
 
         return $stack->getCurrentRequest();
+    }
+
+    /**
+     * @return VersionManager
+     */
+    private function getVersionManager()
+    {
+        return new VersionManager();
     }
 }
