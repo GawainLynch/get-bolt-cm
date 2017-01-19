@@ -53,13 +53,17 @@ class VersionDumper
             $arr[$verMajor][$verMajorMinor][]  = $result;
         }
 
-        krsort($arr);
-        array_walk($arr, function (&$a) {
-            krsort($a, SORT_NATURAL);
-            array_walk($a, function (&$v) {
-                rsort($v);
-            });
-        });
+        $semVerSort = function ($a, $b) {
+            return version_compare($a, $b, '<');
+        };
+
+        krsort($arr, SORT_NATURAL);
+        foreach ($arr as &$major) {
+            krsort($major, SORT_NATURAL);
+            foreach ($major as &$majorMinor) {
+                usort($majorMinor, $semVerSort);
+            }
+        }
 
         $fs->dumpFile($targetFile, json_encode($arr, JSON_PRETTY_PRINT));
 
