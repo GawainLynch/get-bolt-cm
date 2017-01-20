@@ -21,6 +21,8 @@ class Download
     protected $date;
     /** @var string */
     protected $ipAddress;
+    /** @var bool */
+    protected $flat;
 
     /**
      * @return int
@@ -106,6 +108,26 @@ class Download
     public function setIpAddress(string $ipAddress): Download
     {
         $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFlat(): bool
+    {
+        return (bool) $this->flat;
+    }
+
+    /**
+     * @param bool $isFlat
+     *
+     * @return Download
+     */
+    public function setFlat(bool $isFlat): Download
+    {
+        $this->flat = $isFlat;
 
         return $this;
     }

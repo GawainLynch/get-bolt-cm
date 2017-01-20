@@ -19,6 +19,8 @@ class DownloadResolver
     protected $majorMinorPatch;
     /** @var string|null */
     protected $phpVersion;
+    /** @var bool */
+    protected $flat;
 
     /**
      * Create new chainable instance.
@@ -41,11 +43,13 @@ class DownloadResolver
 
         $majorMinor = $this->getMajorMinor();
         $majorMinorPatch = $this->getMajorMinorPatch();
+        $suffix = $this->flat ? '-flat-structure' : '';
 
         $url = sprintf(
-            'https://bolt.cm/distribution/archive/%s/bolt-%s.tar.gz',
+            'https://bolt.cm/distribution/archive/%s/bolt-%s%s.tar.gz',
             $majorMinor,
-            $majorMinorPatch
+            $majorMinorPatch,
+            $suffix
         );
 
         return $url;
@@ -163,6 +167,26 @@ class DownloadResolver
     public function setPhpVersion($phpVersion)
     {
         $this->phpVersion = $phpVersion;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFlat()
+    {
+        return (bool) $this->flat;
+    }
+
+    /**
+     * @param bool $flat
+     *
+     * @return DownloadResolver
+     */
+    public function setFlat($flat)
+    {
+        $this->flat = $flat;
 
         return $this;
     }

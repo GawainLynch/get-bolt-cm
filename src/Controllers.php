@@ -84,6 +84,7 @@ class Controllers implements ControllerProviderInterface
         $resolver = DownloadResolver::create()
             ->setMajorMinor($majorMinor)
             ->setMajorMinorPatch($majorMinorPatch)
+            ->setFlat($this->getRequest()->query->getBoolean('flat'))
         ;
 
         try {
@@ -92,12 +93,13 @@ class Controllers implements ControllerProviderInterface
             return new Response(sprintf('%s', $e->getMessage()), Response::HTTP_FORBIDDEN);
         }
 
+        $logger = $this->app['logger'];
         if ($this->app['debug']) {
-            $logger = $this->app['logger'];
             $logger->info("Minor is: $majorMinor | Patch is: $majorMinorPatch | Download URL: $url");
         }
+        $logger->info('Query is: ', $this->getRequest()->query->all());
 
-        $this->logDownload($majorMinorPatch);
+        $this->logDownload($resolver);
 
         return new RedirectResponse($resolver->getUrl());
     }
@@ -159,18 +161,20 @@ class Controllers implements ControllerProviderInterface
     /**
      * Record a request in the database.
      *
-     * @param $majorMinorPatch
+     * @param DownloadResolver $resolver
      */
-    protected function logDownload($majorMinorPatch)
+    protected function logDownload(DownloadResolver $resolver)
     {
+
         /** @var EntityManager $em */
         $em = $this->app['orm.em'];
         $em->getRepository(Entity\Download::class);
         $d = (new Download())
-            ->setVersion($majorMinorPatch)
+            ->setVersion($resolver->getMajorMinorPatch())
             ->setPhpVersion($this->getRequest()->query->get('php'))
             ->setDate(new \DateTime())
             ->setIpAddress($this->getRequest()->getClientIp())
+            ->setFlat($resolver->isFlat())
         ;
         $em->persist($d);
         $em->flush($d);

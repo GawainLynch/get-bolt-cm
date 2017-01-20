@@ -42,3 +42,10 @@ Bolt\Site\Installer\Entity\Download:
       length: 45
       column: ip_address
       unique: false
+    flat:
+      type: boolean
+      column: flat
+      unique: false
+      options:
+        notnull: false
+        comment: True if requesting a flat version to install
