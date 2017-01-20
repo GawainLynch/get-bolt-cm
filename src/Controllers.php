@@ -8,10 +8,12 @@ use Bolt\Site\Installer\Exception\InvalidVersionException;
 use Doctrine\ORM\EntityManager;
 use Silex;
 use Silex\Api\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class Controllers implements ControllerProviderInterface
 {
@@ -31,6 +33,10 @@ class Controllers implements ControllerProviderInterface
 
         $ctr->get('/latest', [$this, 'latest'])
             ->bind('latest')
+        ;
+
+        $ctr->get('/installer', [$this, 'installer'])
+            ->bind('installer')
         ;
 
         $ctr->get('/download/{majorMinor}/{majorMinorPatch}', [$this, 'download'])
@@ -96,6 +102,28 @@ class Controllers implements ControllerProviderInterface
         return new RedirectResponse($resolver->getUrl());
     }
 
+    /**
+     * @return BinaryFileResponse
+     */
+    public function installer()
+    {
+        $response = new BinaryFileResponse('../web/bolt.phar', Response::HTTP_OK);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'bolt'
+        );
+
+        return $response;
+    }
+
+    /**
+     * Render a template.
+     *
+     * @param string $template
+     * @param array  $variables
+     *
+     * @return string
+     */
     protected function render($template, array $variables = [])
     {
         return $this->app['twig']->render($template, $variables);

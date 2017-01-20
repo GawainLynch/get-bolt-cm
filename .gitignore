@@ -1,5 +1,6 @@
 app/config/*.yml
 var/*
 vendor/
-web/versions.json
+web/bolt.phar
 web/installer.version
+web/versions.json
