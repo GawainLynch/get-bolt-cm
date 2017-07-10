@@ -42,28 +42,28 @@ class VersionDumper
 
         $arr = [];
         foreach ($results as $result) {
-            if (!preg_match('#\d+\.\d+\.\d+#', $result)) {
+            // Only get stable SemVer entries
+            if (!preg_match('#^\d+\.\d+\.\d+$#', $result)) {
                 continue;
             }
             $parts = explode('.', $result);
-
             $verMajor = sprintf('%s.x', $parts[0]);
             $verMajorMinor = sprintf('%s.%s', $parts[0], $parts[1]);
 
             $arr[$verMajor][$verMajorMinor][]  = $result;
         }
 
-        $semVerSort = function ($a, $b) {
-            return version_compare($a, $b, '<');
-        };
+        // Sort major keys
+        krsort($arr, SORT_NUMERIC);
+        array_walk($arr, function (&$a) {
+            // Sort minor keys
+            krsort($a, SORT_NATURAL);
 
-        krsort($arr, SORT_NATURAL);
-        foreach ($arr as &$major) {
-            krsort($major, SORT_NATURAL);
-            foreach ($major as &$majorMinor) {
-                usort($majorMinor, $semVerSort);
-            }
-        }
+            // Sort SemVer values
+            array_walk($a, function (&$v) {
+                rsort($v, SORT_NATURAL);
+            });
+        });
 
         $fs->dumpFile($targetFile, json_encode($arr, JSON_PRETTY_PRINT));
 
